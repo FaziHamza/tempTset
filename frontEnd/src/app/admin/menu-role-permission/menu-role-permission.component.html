@@ -1,0 +1,44 @@
+<div class="flex flex-wrap">
+    <div class="w-full pl-2">
+        <button nz-button nzType="primary" (click)="bulkUpdate()">Save</button>
+        <br />
+        <br />
+        <nz-table *ngIf="roleList.length>0" #rolePermissionTable [nzData]="menuList">
+            <thead>
+                <tr>
+                    <th nzWidth="3%">#</th>
+                    <th nzWidth="20%">Menus</th>
+                    <th nzWidth="10%" *ngFor="let role of roleList">{{role.name}}<br>R<nz-divider nzType="vertical"></nz-divider>W<nz-divider nzType="vertical"></nz-divider>U<nz-divider nzType="vertical"></nz-divider>D</th>
+                    <th nzWidth="10%">Action</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let menu of rolePermissionTable.data;let index=index">
+                    <td>{{ index+1 }}</td>
+                    <td>
+                        {{menu.name}}
+                    </td>
+                    <td *ngFor="let role of roleList">
+                        <div nz-row>
+                            <div class="ml-1"><label nz-checkbox [(ngModel)]="menu.permissions[role.name+'_R']"
+                                    nzValue="R"></label></div>
+                            <div class="ml-1"><label nz-checkbox [(ngModel)]="menu.permissions[role.name+'_W']"
+                                    nzValue="W"></label></div>
+                            <div class="ml-1"><label nz-checkbox [(ngModel)]="menu.permissions[role.name+'_U']"
+                                    nzValue="U"></label></div>
+                            <div class="ml-1"><label nz-checkbox [(ngModel)]="menu.permissions[role.name+'_D']"
+                                    nzValue="D"></label></div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="table-operation">
+                            <a class="operation" (click)="submitRole(menu)">Save</a>
+                        </span>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

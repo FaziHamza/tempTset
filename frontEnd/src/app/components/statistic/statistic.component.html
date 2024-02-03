@@ -1,0 +1,15 @@
+<nz-row [nzGutter]="16">
+    <ng-container *ngFor="let item of statisticData.statisticArray">
+        <nz-col [nzSpan]="12">
+            <nz-card>
+                <nz-statistic [nzPrefix]="prefixTpl" [nzSuffix]="suffixTpl" [nzValue]='item.value'
+                [nzTitle]='item.title | translate'></nz-statistic>
+                <ng-template #prefixTpl>
+                    <st-icon *ngIf="statisticData?.prefixIcon" [type]="statisticData?.iconType"
+                      [hoverIconColor]="statisticData?.hoverIconColor || ''"  [icon]="statisticData.prefixIcon" [size]="statisticData?.iconSize" [color]="statisticData?.iconColor"></st-icon></ng-template>
+                <ng-template #suffixTpl><st-icon *ngIf="statisticData?.suffixIcon" [type]="statisticData?.iconType"
+                      [hoverIconColor]="statisticData?.hoverIconColor || ''"  [icon]="statisticData.suffixIcon" [size]="statisticData?.iconSize" [color]="statisticData?.iconColor"></st-icon></ng-template>
+            </nz-card>
+        </nz-col>
+    </ng-container>
+</nz-row>

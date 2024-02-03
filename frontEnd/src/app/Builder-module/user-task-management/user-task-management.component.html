@@ -1,0 +1,162 @@
+<nz-spin [nzSpinning]="saveLoader" [nzSize]="'large'">
+  <div class="b-card top-action-bar-wrap p-3 UTM">
+    <div class="page-selector user-task-manager-cascader">
+      <nz-form-control nzErrorTip="Please Select Page">
+        <nz-cascader nzChangeOnSelect [nzAllowClear]="true" style="padding-left: 4px; width: 100%"
+          [(ngModel)]="selectDepartmentName" [nzOptions]="departmentData" (ngModelChange)="onDepartmentChange($event)"
+          [nzLoadData]="loadData.bind(this)" placeholder="Select Screen">
+        </nz-cascader>
+      </nz-form-control>
+    </div>
+    <br>
+    <div class="assigtask-table">
+      <nz-table #nestedTable [nzData]="data" nzBordered [nzPageSize]="10" class="rounded-lg">
+        <thead>
+          <tr>
+            <th nzWidth="3%" class="!text-gray-400 rounded-tl-lg">Type</th>
+            <th class="!text-gray-400 " nz-typography nzEllipsis><i class="fa-regular fa-hashtag mr-1.5 text-lg "></i>
+              key</th>
+            <th nzWidth="16.66%" class="!text-gray-400 "><i class="fa-regular text-lg fa-bars-sort mr-1.5 "></i>Summary
+            </th>
+            <th nzWidth="11.11%" class="!text-gray-400 "><i
+                class="fa-regular text-lg fa-circle-arrow-right mr-1.5 "></i> Status </th>
+            <th nzWidth="14.66%" class="!text-gray-400 "><i class="fa-regular fa-at text-lg mr-1.5"></i> Assignee </th>
+            <th nzWidth="11.11%" class="!text-gray-400 "><i class="fa-regular fa-calendar-days text-lg mr-1.5 "></i> Due
+              Date</th>
+            <th class="!text-gray-400 "><i class="fa-regular fa-circle-chevron-up text-lg mr-1.5"></i>
+              Priority</th>
+            <th class="!text-gray-400" >Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+            <tr>
+              <td nzWidth="3%" [(nzExpand)]="data.expand"></td>
+              <td nzWidth="11.11%">
+                <p class="w-full" nz-typography nzEllipsis>
+                  {{data._id}}
+                </p>
+              </td>
+              <td nzWidth="16.66%">{{data.issue}}</td>
+              <td nzWidth="11.11%">
+                <div *ngIf="editId != data._id">
+                  <nz-tag class="font-semibold"
+                    [nzColor]="data['status'] == 'open' ? 'red' : (data['status'] == 'inProgress' ? 'orange' : (data['status'] == 'completed' ? 'green' : 'gray'))">{{data.status}}</nz-tag>
+                </div>
+                <div>
+                  <nz-select *ngIf="editId == data._id" [(ngModel)]="data.status">
+                    <nz-option nzValue="open" nzLabel="Open"></nz-option>
+                    <nz-option nzValue="inProgress" nzLabel="In Progress"></nz-option>
+                    <nz-option nzValue="completed" nzLabel="completed"></nz-option>
+                    <nz-option nzValue="closed" nzLabel="Close"></nz-option>
+                  </nz-select>
+                </div>
+              </td>
+              <td nzWidth="14.66%">
+                <div class="tab-div w-full flex items-center space-x-2">
+                  <nz-avatar nzIcon="user" class="table-avatar"></nz-avatar>
+                  <p>{{data.assignTo}}</p>
+                </div>
+              </td>
+              <td>
+                <p class="!bg-gray-200 px-1 rounded-sm w-fit text-gray-700"> {{data.dueDate}} </p>
+              </td>
+              <td nzWidth="11.11%">
+                <div class="flex items-center space-x-2 cursor-pointer">
+                  <i class="fa-solid fa-chevrons-up text-xs text-red-400"></i>
+                  <p> Text</p>
+                </div>
+              </td>
+              <td>
+                <i class="fa-regular text-xl fa-circle-arrow-right text-gray-400 mr-2" (click)="showIssue(data)"></i>
+                <i *ngIf="editId != data._id" class=" text-xl fas fa-edit text-red-500"
+                  (click)="startEdit(data._id,data)"></i>
+                <i *ngIf="editId == data._id" class=" text-xl fas fa-save text-blue-500" (click)="saveEdit(data)"></i>
+                <i *ngIf="editId == data._id" class=" text-xl fas fa-times-circle text-red-500 ml-2"
+                  (click)="cancelEdit(data)"></i>
+              </td>
+            </tr>
+            <tr [nzExpand]="data.expand">
+              <nz-table #innerTable [nzData]="data.children" nzSize="middle" [nzShowPagination]="true">
+                <thead>
+                  <tr>
+                    <th nzWidth="12%" class="!text-gray-400 rounded-tl-lg">Type</th>
+                    <th class="!text-gray-400 " nz-typography nzEllipsis><i
+                        class="fa-regular fa-hashtag mr-1.5 text-lg "></i>
+                      key</th>
+                    <th nzWidth="16.66%" class="!text-gray-400 "><i
+                        class="fa-regular text-lg fa-bars-sort mr-1.5 "></i>Summary
+                    </th>
+                    <th nzWidth="11.11%" class="!text-gray-400 "><i
+                        class="fa-regular text-lg fa-circle-arrow-right mr-1.5 "></i> Status </th>
+                    <th nzWidth="14.66%" class="!text-gray-400 "><i class="fa-regular fa-at text-lg mr-1.5"></i>
+                      Assignee </th>
+                    <th nzWidth="11.11%" class="!text-gray-400 "><i
+                        class="fa-regular fa-calendar-days text-lg mr-1.5 "></i> Due
+                      Date</th>
+                    <th class="!text-gray-400 "><i class="fa-regular fa-circle-chevron-up text-lg mr-1.5"></i>
+                      Priority</th>
+                    <th class="!text-gray-400">Actions</th>
+                  </tr>
+                </thead>
+        <tbody>
+          <tr *ngFor="let data of innerTable.data">
+            <td nzWidth="11.11%" [(nzExpand)]="data.expand"></td>
+            <td nzWidth="11.11%">
+              <p class="w-full" nz-typography nzEllipsis>
+                {{data._id}}
+              </p>
+            </td>
+            <td nzWidth="16.66%">{{data.issue}}</td>
+            <td nzWidth="11.11%">
+              <div *ngIf="editId != data._id">
+                <nz-tag class="font-semibold"
+                  [nzColor]="data['status'] == 'open' ? 'red' : (data['status'] == 'inProgress' ? 'orange' : (data['status'] == 'completed' ? 'green' : 'gray'))">{{data.status}}</nz-tag>
+              </div>
+              <div>
+                <nz-select *ngIf="editId == data._id" [(ngModel)]="data.status">
+                  <nz-option nzValue="open" nzLabel="Open"></nz-option>
+                  <nz-option nzValue="inProgress" nzLabel="In Progress"></nz-option>
+                  <nz-option nzValue="completed" nzLabel="completed"></nz-option>
+                  <nz-option nzValue="closed" nzLabel="Close"></nz-option>
+                </nz-select>
+              </div>
+            </td>
+            <td nzWidth="16.66%">
+              <div class="tab-div w-full flex items-center space-x-2">
+                <nz-avatar nzIcon="user" class="table-avatar"></nz-avatar>
+                <p>{{data.assignTo}}</p>
+              </div>
+            </td>
+            <td nzWidth="11.11%">
+              <p class="!bg-gray-200 px-1 rounded-sm w-fit text-gray-700"> {{data.dueDate}} </p>
+            </td>
+            <td nzWidth="11.11%">
+              <div class="flex items-center space-x-2 cursor-pointer">
+                <i class="fa-solid fa-chevrons-up text-xs text-red-400"></i>
+                <p> Text</p>
+              </div>
+            </td>
+            <td>
+              <i class="fa-regular text-lg fa-circle-arrow-right text-gray-400 mr-2" (click)="showIssue(data)"></i>
+              <i *ngIf="editId != data._id" class=" text-lg fas fa-edit text-red-500"
+                (click)="startEdit(data._id,data)"></i>
+              <i *ngIf="editId == data._id" class=" text-lg fas fa-save text-blue-500" (click)="saveEdit(data)"></i>
+              <i *ngIf="editId == data._id" class=" text-lg fas fa-times-circle text-red-500 ml-2"
+                (click)="cancelEdit(data)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      </tr>
+      </ng-template>
+      </tbody>
+      </nz-table>
+    </div>
+  </div>
+</nz-spin>
+<div *ngIf="this.issueReport['issueReport'] && this.issueReport['issueReport']?.length  > 0">
+  <st-task-report (notify)="updateIssues($event)" class="close-icon" [item]="this.issueReport"
+    [screenName]="this.issueReport['issueReport'][0].screenId" [assignToresponse]="this.assignToresponse"
+    [type]="'userTaskManagement'" [userTaskManagementData]="data"></st-task-report>
+</div>

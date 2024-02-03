@@ -1,0 +1,44 @@
+.image-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  /* Set the desired height for the container */
+}
+
+.image-preview {
+  max-width: 100%;
+  /* Adjust the max-width if needed */
+  max-height: 100%;
+  /* Adjust the max-height if needed */
+  object-fit: contain;
+  /* Adjust the object-fit if needed */
+}
+
+.component-wrapper2 {
+  display: flex;
+  align-items: center;
+
+  .w-100 {
+    width: 100%;
+  }
+}
+
+
+
+// h3 {
+// color: #fff;
+// margin-bottom: 0;
+// user-select: none;
+// }
+
+// div {
+//   width: [desired width];
+//   height: [desired height];
+// }
+
+// div img {
+//   width: 100% !important;
+//   height: 100% !important;
+//   object-fit: contain !important;
+// }

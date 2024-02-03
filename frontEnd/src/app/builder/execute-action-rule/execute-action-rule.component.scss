@@ -1,0 +1,21 @@
+.editor-container {
+    width: 100% !important;
+    height: 10vh !important;
+}
+
+
+/* Element | http://zubairv.com:5600/ */
+
+.box {
+    display: flex;
+    flex-direction: column;
+    //This line comment due to warning
+    // align-items: start;  
+    align-items: flex-start;  
+    label {
+        font-size: 14px;
+        font-weight: 600;
+        padding-bottom: 5px;
+    }
+}
+  
